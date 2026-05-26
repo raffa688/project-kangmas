@@ -60,32 +60,78 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar KANGMAS')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text('Daftar Akun', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DropdownButtonFormField<String>(
-              value: _role,
-              decoration: const InputDecoration(labelText: 'Mendaftar sebagai'),
-              items: const [
-                DropdownMenuItem(value: 'user', child: Text('Pencari Jasa (User)')),
-                DropdownMenuItem(value: 'tukang', child: Text('Tukang (Worker)')),
-              ],
-              onChanged: (val) => setState(() => _role = val!),
+            const Text(
+              'Buat Akun Baru',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
-            TextField(controller: _nameCtl, decoration: const InputDecoration(labelText: 'Nama Lengkap')),
-            TextField(controller: _emailCtl, decoration: const InputDecoration(labelText: 'Email')),
-            TextField(controller: _phoneCtl, decoration: const InputDecoration(labelText: 'No. WhatsApp')),
-            TextField(controller: _passCtl, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
-            TextField(controller: _passConfCtl, decoration: const InputDecoration(labelText: 'Konfirmasi Password'), obscureText: true),
+            const SizedBox(height: 8),
+            Text(
+              'Lengkapi data di bawah untuk bergabung dengan KANGMAS',
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+            const SizedBox(height: 30),
+            
+            // Role Selector with custom styling
+            const Text('Mendaftar sebagai:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('User')),
+                    selected: _role == 'user',
+                    onSelected: (val) => setState(() => _role = 'user'),
+                    selectedColor: Colors.amber.shade700,
+                    labelStyle: TextStyle(color: _role == 'user' ? Colors.white : Colors.black),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ChoiceChip(
+                    label: const Center(child: Text('Tukang')),
+                    selected: _role == 'tukang',
+                    onSelected: (val) => setState(() => _role = 'tukang'),
+                    selectedColor: Colors.amber.shade700,
+                    labelStyle: TextStyle(color: _role == 'tukang' ? Colors.white : Colors.black),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            _buildTextField(_nameCtl, 'Nama Lengkap', Icons.person_outline),
+            const SizedBox(height: 16),
+            _buildTextField(_emailCtl, 'Email', Icons.email_outlined, keyboardType: TextInputType.emailAddress),
+            const SizedBox(height: 16),
+            _buildTextField(_phoneCtl, 'No. WhatsApp', Icons.phone_android_outlined, keyboardType: TextInputType.phone),
+            const SizedBox(height: 16),
+            _buildTextField(_passCtl, 'Password', Icons.lock_outline, obscureText: true),
+            const SizedBox(height: 16),
+            _buildTextField(_passConfCtl, 'Konfirmasi Password', Icons.lock_reset_outlined, obscureText: true),
             
             if (_role == 'tukang') ...[
-              const Divider(height: 30, thickness: 2,),
-              const Text('Data Profil Tukang', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 32),
+              const Text('Profil Profesional Tukang', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: _category,
-                decoration: const InputDecoration(labelText: 'Kategori Keahlian'),
+                decoration: InputDecoration(
+                  labelText: 'Kategori Keahlian',
+                  prefixIcon: const Icon(Icons.build_circle_outlined),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
                 items: const [
                   DropdownMenuItem(value: 'listrik', child: Text('Listrik')),
                   DropdownMenuItem(value: 'air', child: Text('Air / Plumbing')),
@@ -93,23 +139,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
                 onChanged: (val) => setState(() => _category = val!),
               ),
-              TextField(controller: _addressCtl, decoration: const InputDecoration(labelText: 'Alamat Tinggal')),
-              TextField(controller: _priceCtl, decoration: const InputDecoration(labelText: 'Harga Dasar Jasa (Rp)'), keyboardType: TextInputType.number),
+              const SizedBox(height: 16),
+              _buildTextField(_addressCtl, 'Alamat Tinggal', Icons.location_on_outlined),
+              const SizedBox(height: 16),
+              _buildTextField(_priceCtl, 'Harga Dasar Jasa (Rp)', Icons.payments_outlined, keyboardType: TextInputType.number),
               const Padding(
                 padding: EdgeInsets.only(top: 8.0),
-                child: Text('Note: Lokasi akan di-set otomatis ke area Telkom University untuk MVP demo.', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                child: Text('Note: Lokasi akan di-set otomatis untuk demo.', style: TextStyle(color: Colors.grey, fontSize: 12)),
               ),
             ],
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
+            
             if (auth.isLoading)
-              const CircularProgressIndicator()
+              const Center(child: CircularProgressIndicator())
             else
               ElevatedButton(
                 onPressed: _register,
-                child: const Text('Daftar Sekarang'),
+                child: const Text('DAFTAR SEKARANG', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ),
+            
+            const SizedBox(height: 24),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label, IconData icon, {bool obscureText = false, TextInputType? keyboardType}) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
       ),
     );

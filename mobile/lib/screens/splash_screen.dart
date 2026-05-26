@@ -31,9 +31,39 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.amber.shade700,
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.engineering, size: 80, color: Colors.amber.shade700),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'KANGMAS',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 4,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Solusi Tukang Terpercaya',
+              style: TextStyle(color: Colors.white70, fontSize: 16),
+            ),
+            const SizedBox(height: 48),
+            const CircularProgressIndicator(color: Colors.white),
+          ],
+        ),
       ),
     );
   }
