@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function LayananSection() {
-  const [activeTab, setActiveTab] = useState('Komersial');
+  const [activeTab, setActiveTab] = useState('Perumahan');
 
   const services = [
     {
@@ -57,29 +57,17 @@ export default function LayananSection() {
           <div className="inline-block text-primary text-sm font-semibold mb-2">Layanan Kami</div>
           <h2 className="text-3xl font-bold text-gray-900">Spesialisasi Kami</h2>
           <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            Berbagai solusi layanan tukang profesional untuk kebutuhan komersial, perumahan, dan industri.
+            Berbagai solusi layanan tukang profesional khusus untuk kebutuhan perumahan Anda.
           </p>
         </div>
 
         {/* Responsive Tabs Grid */}
         <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mb-8">
           <button 
-            onClick={() => setActiveTab('Komersial')}
-            className={`px-4 sm:px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition ${activeTab === 'Komersial' ? 'bg-primary text-gray-900 shadow' : 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
-          >
-            <BuildingOfficeIcon className="h-5 w-5" /> Komersial
-          </button>
-          <button 
             onClick={() => setActiveTab('Perumahan')}
             className={`px-4 sm:px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition ${activeTab === 'Perumahan' ? 'bg-primary text-gray-900 shadow' : 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
           >
             <HomeModernIcon className="h-5 w-5" /> Perumahan
-          </button>
-          <button 
-            onClick={() => setActiveTab('Industri')}
-            className={`px-4 sm:px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition ${activeTab === 'Industri' ? 'bg-primary text-gray-900 shadow' : 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
-          >
-            <WrenchIcon className="h-5 w-5" /> Industri
           </button>
         </div>
 

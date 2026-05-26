@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function Layanan() {
-  const [activeTab, setActiveTab] = useState('Komersial');
+  const [activeTab, setActiveTab] = useState('Perumahan');
 
   const services = [
     {
@@ -69,22 +69,10 @@ export default function Layanan() {
 
           <div className="flex justify-center gap-4 mb-8">
             <button 
-              onClick={() => setActiveTab('Komersial')}
-              className={`px-6 py-3 rounded-lg font-semibold flex items-center gap-2 ${activeTab === 'Komersial' ? 'bg-white text-gray-900 shadow' : 'border border-gray-900 text-gray-900'}`}
-            >
-              <BuildingOfficeIcon className="h-5 w-5" /> Komersial
-            </button>
-            <button 
               onClick={() => setActiveTab('Perumahan')}
               className={`px-6 py-3 rounded-lg font-semibold flex items-center gap-2 ${activeTab === 'Perumahan' ? 'bg-white text-gray-900 shadow' : 'border border-gray-900 text-gray-900'}`}
             >
               <HomeModernIcon className="h-5 w-5" /> Perumahan
-            </button>
-            <button 
-              onClick={() => setActiveTab('Industri')}
-              className={`px-6 py-3 rounded-lg font-semibold flex items-center gap-2 ${activeTab === 'Industri' ? 'bg-white text-gray-900 shadow' : 'border border-gray-900 text-gray-900'}`}
-            >
-              <WrenchIcon className="h-5 w-5" /> Industri
             </button>
           </div>
 

@@ -2,6 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WrenchScrewdriverIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import api from '../services/api';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+
+const mapContainerStyle = {
+  width: '100%',
+  height: '300px',
+  borderRadius: '0.5rem',
+};
+
+const defaultCenter = {
+  lat: -6.974001,
+  lng: 107.630348,
+};
 
 /**
  * RegisterTukang — Pure UI Component (Multi-step Registration Form)
@@ -11,6 +23,9 @@ import api from '../services/api';
  */
 export default function RegisterTukang({ onSubmit }) {
   const navigate = useNavigate();
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '', 
+  });
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -192,31 +207,58 @@ export default function RegisterTukang({ onSubmit }) {
             {step === 4 && (
               <div className="space-y-6 animate-fadeIn">
                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Pilih Cara Input Lokasi Domisili</label>
-                    <div className="flex gap-4">
-                       <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="radio" name="locationType" value="auto" checked={formData.locationType === 'auto'} onChange={handleChange} className="text-primary focus:ring-primary" />
-                          <span className="text-sm">Gunakan GPS Saat Ini</span>
-                       </label>
-                       <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="radio" name="locationType" value="manual" checked={formData.locationType === 'manual'} onChange={handleChange} className="text-primary focus:ring-primary" />
-                          <span className="text-sm">Input Manual Alamat</span>
-                       </label>
-                    </div>
-                 </div>
-
-                 {formData.locationType === 'auto' ? (
-                    <div className="bg-gray-100 p-4 flex justify-center items-center rounded border border-gray-300 border-dashed min-h-[100px]">
-                       <button type="button" onClick={handleGetLocation} className={`text-sm border font-bold px-4 py-2 rounded shadow-sm transition ${formData.lat ? 'bg-green-100 text-green-700 border-green-300' : 'bg-white border-gray-300 hover:bg-gray-50'}`}>
-                          {formData.lat ? `✓ Terkunci: ${formData.lat.toFixed(5)}, ${formData.lng.toFixed(5)}` : '📍 Ambil Koordinat GPS Sekarang'}
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Tentukan Titik Lokasi Rumah / Kos (Geser/Klik pada Peta)</label>
+                    
+                    <div className="mb-3">
+                       <button type="button" onClick={handleGetLocation} className="text-sm bg-primary text-gray-900 font-bold px-4 py-2 rounded shadow-sm hover:bg-primary-hover transition flex items-center gap-2">
+                          📍 Gunakan GPS Saat Ini
                        </button>
                     </div>
-                 ) : (
-                    <div>
-                       <label className="block text-sm font-semibold text-gray-700">Detail Alamat Rumah / Kos</label>
-                       <textarea required name="locationDetail" rows="3" value={formData.locationDetail} onChange={handleChange} className="mt-1 w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none" placeholder="Masukkan alamat lengkap..." />
+
+                    <div className="bg-gray-100 flex justify-center items-center rounded border border-gray-300 min-h-[300px] relative overflow-hidden">
+                       {loadError ? (
+                         <div className="text-red-500 font-bold">Error Loading Maps</div>
+                       ) : !isLoaded ? (
+                         <div className="text-gray-500 font-bold">Loading Map...</div>
+                       ) : (
+                         <GoogleMap
+                           mapContainerStyle={mapContainerStyle}
+                           zoom={15}
+                           center={formData.lat && formData.lng ? { lat: formData.lat, lng: formData.lng } : defaultCenter}
+                           onClick={(e) => {
+                              setFormData(prev => ({
+                                ...prev,
+                                lat: e.latLng.lat(),
+                                lng: e.latLng.lng()
+                              }));
+                           }}
+                           options={{
+                              disableDefaultUI: true,
+                              zoomControl: true,
+                           }}
+                         >
+                           {formData.lat && formData.lng && (
+                              <Marker position={{ lat: formData.lat, lng: formData.lng }} />
+                           )}
+                         </GoogleMap>
+                       )}
+                       {!formData.lat && (
+                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90 px-4 py-2 rounded shadow text-sm font-bold text-gray-800 pointer-events-none">
+                             Klik peta untuk menandai lokasi
+                          </div>
+                       )}
                     </div>
-                 )}
+                    {formData.lat && formData.lng ? (
+                       <p className="text-xs text-green-600 mt-2 font-bold">✓ Koordinat terpilih: {formData.lat.toFixed(5)}, {formData.lng.toFixed(5)}</p>
+                    ) : (
+                       <p className="text-xs text-red-500 mt-2 font-bold">*Wajib mengklik lokasi pada peta</p>
+                    )}
+                 </div>
+
+                 <div>
+                    <label className="block text-sm font-semibold text-gray-700">Detail Alamat (Nomor Rumah / Patokan)</label>
+                    <textarea required name="locationDetail" rows="3" value={formData.locationDetail} onChange={handleChange} className="mt-1 w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none" placeholder="Contoh: Jl. Sukabirus No 10, rumah cat biru pagar hitam..." />
+                 </div>
               </div>
             )}
 

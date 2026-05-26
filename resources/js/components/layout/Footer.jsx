@@ -39,24 +39,13 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-200">Lokasi</p>
-                  <p className="text-sm font-semibold text-white">Indonesia</p>
+                  <p className="text-sm font-semibold text-white">Bandung, Indonesia</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1">
-              <p className="text-sm text-gray-200 mb-4">Kalian bisa terhubung dengan kami melalui media sosial berikut ini</p>
-              <div className="flex gap-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-gray-900 cursor-pointer hover:bg-primary-hover">
-                    <span className="text-xs">#</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="font-semibold text-white mb-4">Jelajahi</h3>
               <ul className="space-y-2 text-sm text-gray-200">

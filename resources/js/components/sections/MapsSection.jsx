@@ -89,9 +89,21 @@ export default function MapsSection() {
                 />
 
                 {tukangList.map((tukang) => {
-                  // Fallback ke posisi tengah kalau lat lang tak tersedia
-                  const posLat = tukang.lat ? parseFloat(tukang.lat) : center.lat + (Math.random() - 0.5) * 0.01;
-                  const posLng = tukang.lng ? parseFloat(tukang.lng) : center.lng + (Math.random() - 0.5) * 0.01;
+                  // Fallback deterministik (berdasarkan ID) agar tidak random berubah-ubah
+                  const pseudoRandom = (seed) => {
+                     const x = Math.sin(seed) * 10000;
+                     return x - Math.floor(x);
+                  };
+                  
+                  const hasValidCoords = tukang.lat && tukang.lng && parseFloat(tukang.lat) !== 0;
+                  
+                  const posLat = hasValidCoords 
+                      ? parseFloat(tukang.lat) 
+                      : center.lat + (pseudoRandom(tukang.id) - 0.5) * 0.015;
+                  
+                  const posLng = hasValidCoords 
+                      ? parseFloat(tukang.lng) 
+                      : center.lng + (pseudoRandom(tukang.id + 100) - 0.5) * 0.015;
                   
                   return (
                     <Marker

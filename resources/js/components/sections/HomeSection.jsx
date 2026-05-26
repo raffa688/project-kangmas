@@ -8,7 +8,7 @@ export default function HomeSection() {
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-gray-900 to-gray-800 py-20 relative overflow-hidden text-white h-[600px] flex items-center">
          <div className="absolute inset-0 bg-black/40 z-10"></div>
-         <img src="https://images.unsplash.com/photo-1541888086225-ee5a006db235?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover z-0" />
+         {/* <img src="https://images.unsplash.com/photo-1541888086225-ee5a006db235?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover z-0" /> */}
          
          <div className="kangmas-container relative z-20 flex flex-col items-center justify-center h-full text-center mt-8 md:mt-0">
             <div className="max-w-4xl mx-auto flex flex-col items-center">
@@ -32,7 +32,7 @@ export default function HomeSection() {
       <div className="bg-white py-20">
          <div className="kangmas-container flex flex-col md:flex-row items-center gap-12">
             <div className="md:w-1/2 flex justify-center">
-              <img src="https://images.unsplash.com/photo-1621905251918-48416bd8af9a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Worker Smiling" className="max-w-sm rounded-[3rem] shadow-2xl" />
+              <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Worker Smiling" className="max-w-sm rounded-[3rem] shadow-2xl" />
             </div>
             <div className="md:w-1/2">
               <div className="inline-flex items-center gap-2 text-primary font-bold text-sm mb-4">
