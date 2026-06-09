@@ -3,14 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  // Use 10.0.2.2 for Android Emulator, or localhost for Windows/Web
-  // Or hardcode to your PC's local IP if testing on a real device.
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
+  // Gunakan IP Laptop Anda agar bisa diakses dari HP asli atau Emulator
+  static const String baseUrl = 'http://10.60.13.88:8000/api';
 
   static Future<Map<String, String>> _getHeaders() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('auth_token');
-    
+
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

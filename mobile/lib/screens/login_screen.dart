@@ -13,7 +13,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordCtl = TextEditingController();
 
   Future<void> _launchRegisterUrl() async {
-    final Uri url = Uri.parse('http://127.0.0.1:8000/register');
+    // Gunakan IP Laptop Anda
+    final Uri url = Uri.parse('http://10.60.13.88:8000/register');
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
@@ -88,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            
+
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -104,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
                   const SizedBox(height: 30),
-                  
+
                   TextField(
                     controller: _emailCtl,
                     decoration: InputDecoration(
@@ -119,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 20),
-                  
+
                   TextField(
                     controller: _passwordCtl,
                     decoration: InputDecoration(
@@ -133,9 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     obscureText: true,
                   ),
-                  
+
                   const SizedBox(height: 40),
-                  
+
                   if (auth.isLoading)
                     const Center(child: CircularProgressIndicator())
                   else
@@ -143,9 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: _login,
                       child: const Text('MASUK', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                     ),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   Center(
                     child: TextButton(
                       onPressed: _launchRegisterUrl,
