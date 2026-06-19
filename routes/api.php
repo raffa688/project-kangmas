@@ -9,6 +9,10 @@ use App\Http\Controllers\Api\TukangProfileController;
 use App\Http\Controllers\Api\TukangController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok', 'app' => 'KangMas']);
+});
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/recommend', [RecommenderController::class, 'recommend']);

@@ -29,6 +29,7 @@ class LiveTrackingScreen extends StatelessWidget {
         throw 'Tidak dapat membuka WhatsApp';
       }
     } catch (e) {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Gagal membuka WhatsApp: $e")),
       );
@@ -37,14 +38,14 @@ class LiveTrackingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ambil data order yg dikirim dri UserHomeScreen
-    final order = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final order = Map<String, dynamic>.from(args);
     final tukang = order['tukang'] ?? {};
 
     return Scaffold(
       body: Stack(
         children: [
-          // Background Map boongan
+          // bg map boongan aja
           Container(
             color: const Color(0xFFFFF9E7),
             width: double.infinity,
@@ -54,7 +55,7 @@ class LiveTrackingScreen extends StatelessWidget {
             ),
           ),
 
-          // tombol buat balik
+          // tombol buat blik
           Positioned(
             top: 50,
             left: 20,
@@ -67,7 +68,7 @@ class LiveTrackingScreen extends StatelessWidget {
             ),
           ),
 
-          // kartu info yg dibawah
+          // kartu info yg d bawah
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -83,7 +84,7 @@ class LiveTrackingScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // profil si tukang nya
+                  // profil kang mas nya
                   Row(
                     children: [
                       CircleAvatar(
@@ -111,7 +112,7 @@ class LiveTrackingScreen extends StatelessWidget {
                   ),
                   const Divider(height: 30),
 
-                  // estimasi nyampe
+                  // estimasi nyampe nya
                   Row(
                     children: [
                       const Icon(Icons.access_time, color: Colors.amber),
@@ -137,7 +138,7 @@ class LiveTrackingScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
 
-                  // bagian lokasi
+                  // bagian lokasii
                   Row(
                     children: [
                       const Icon(Icons.location_on, color: Colors.amber),
@@ -164,7 +165,7 @@ class LiveTrackingScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  // tombol selesein pesanan
+                  // tombol selesein pesenan
                   SizedBox(
                     width: double.infinity,
                     height: 50,

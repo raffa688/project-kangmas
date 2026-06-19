@@ -1,101 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'providers/auth_provider.dart';
-import 'screens/splash_screen.dart';
+import 'services/api_service.dart';
 import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'screens/role_selection_screen.dart';
-import 'screens/auth_choice_screen.dart';
 import 'screens/user_home_screen.dart';
 import 'screens/tukang_home_screen.dart';
 import 'screens/job_detail_screen.dart';
-import 'screens/job_success_screen.dart';
-import 'screens/chat_detail_screen.dart';
-import 'screens/chat_list_screen.dart';
-import 'screens/history_screen.dart';
-import 'screens/profile_screen.dart';
-import 'screens/job_closing_screen.dart';
-import 'screens/create_job_screen.dart';
-import 'screens/order_summary_screen.dart';
-import 'screens/user_job_success_screen.dart';
 import 'screens/live_tracking_screen.dart';
+import 'screens/job_closing_screen.dart';
 import 'screens/proof_approval_screen.dart';
-import 'screens/proof_view_screen.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ],
-      child: const KangmasApp(),
-    ),
-  );
+void main() async {
+  // Pastiin binding Flutter siap sebelum panggil fungsi async
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inisialisasi API & nyari IP server secara otomatis di WiFi
+  await ApiService.init();
+
+  runApp(const KangMasApp());
 }
 
-class KangmasApp extends StatelessWidget {
-  const KangmasApp({super.key});
+class KangMasApp extends StatelessWidget {
+  const KangMasApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'KANGMAS',
+      title: 'KangMas',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF0F172A), // Slate 900
-          primary: const Color(0xFF0F172A),
-          secondary: const Color(0xFF3B82F6), // Blue 500
-        ),
-        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF0F172A),
-          foregroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-        ),
-        useMaterial3: true,
+        primarySwatch: Colors.amber,
+        fontFamily: 'Poppins',
       ),
-      initialRoute: '/',
-      onGenerateRoute: (settings) {
-        if (settings.name == '/auth_choice') {
-          final args = settings.arguments;
-          final role = (args is String) ? args : 'user';
-          return MaterialPageRoute(
-            builder: (context) => AuthChoiceScreen(role: role),
-          );
-        }
-        return null;
-      },
+      initialRoute: '/login',
       routes: {
-        '/': (context) => SplashScreen(),
-        '/role_selection': (context) => RoleSelectionScreen(),
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => RegisterScreen(),
-        '/user_home': (context) => UserHomeScreen(),
-        '/tukang_home': (context) => TukangHomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/user_home': (context) => const UserHomeScreen(),
+        '/tukang_home': (context) => const TukangHomeScreen(),
         '/job_detail': (context) => const JobDetailScreen(),
-        '/job_success': (context) => const JobSuccessScreen(),
-        '/chat_detail': (context) => const ChatDetailScreen(),
-        '/chat_list': (context) => const ChatListScreen(),
-        '/history': (context) => const HistoryScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/job_closing': (context) => const JobClosingScreen(),
-        '/create_job': (context) {
-          final args = ModalRoute.of(context)?.settings.arguments;
-          if (args is Map) {
-            return CreateJobScreen(category: args['category']?.toString() ?? 'Lainnya');
-          } else if (args is String) {
-            return CreateJobScreen(category: args);
-          }
-          return const CreateJobScreen(category: 'Lainnya');
-        },
-        '/order_summary': (context) => const OrderSummaryScreen(),
-        '/user_job_success': (context) => const UserJobSuccessScreen(),
         '/live_tracking': (context) => const LiveTrackingScreen(),
+        '/job_closing': (context) => const JobClosingScreen(),
         '/proof_approval': (context) => const ProofApprovalScreen(),
-        '/proof_view': (context) => const ProofViewScreen(),
       },
     );
   }
